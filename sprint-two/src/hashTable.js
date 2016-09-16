@@ -6,35 +6,40 @@ var HashTable = function() {
 };
 
 HashTable.prototype.insert = function(k, v) {
+
   var index = getIndexBelowMaxForKey(k, this._limit);
   var collision = this._storage.get(index);
-  if (collision !== undefined) {
-    var array = [];
-    array.concat(collision, [k, v]);
-    this._storage.set(index, array);
+  if (collision !== undefined && collision[0] !== k) {
+    var newIndex = null;
+    for (var i = 0; i < this._limit; i++) {
+      if (this._storage.get(i) === undefined) {
+        newIndex = newIndex !== null ? newIndex : i;
+      }  
+    }
+    this._storage.set(newIndex, [k, v]);
   } else {
-    this._storage.set(index, v);
+    this._storage.set(index, [k, v]);
   }
 };
 
 HashTable.prototype.retrieve = function(k) {
-  var index = getIndexBelowMaxForKey(k, this._limit);
-  var collisionCheck = this._storage.get(index);
-  if (Array.isArray(collisionCheck)) {
-    var found = null;
-    collisionCheck.forEach(function(array) {
-      if (array[0] === k) {
-        found = v;
-      }
-    });
-    return found;
+  var result;
+  for (var i = 0; i < this._limit; i++) {   
+    var val = this._storage.get(i);
+    if (val !== undefined && val[0] === k) {
+      result = this._storage.get(i)[1];
+    }
   }
-  return this._storage.get(index);
+  return result;
 };
 
 HashTable.prototype.remove = function(k) {
-  var index = getIndexBelowMaxForKey(k, this._limit);
-  this._storage.set(index, undefined);
+  for (var i = 0; i < this._limit; i++) {
+    var val = this._storage.get(i);
+    if (val !== undefined && val[0] === k) {
+      this._storage.set(i, undefined);
+    }
+  }
 };
 
 
@@ -43,4 +48,8 @@ HashTable.prototype.remove = function(k) {
  * Complexity: What is the time complexity of the above functions?
  */
 
+//if collision
+  //find next untaken index
+    //assign this to collided index 
+    //use collided index to store this new key and value
 
