@@ -41,4 +41,9 @@ describe('tree', function() {
     expect(tree.contains(8)).to.equal(true);
   });
 
+  // extra test
+  it('should return false for a value that the tree does not contain', function() {
+    tree.addChild(5);
+    expect(tree.contains(6)).to.equal(false);
+  });
 });
