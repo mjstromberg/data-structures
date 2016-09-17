@@ -30,6 +30,7 @@ HashTable.prototype.insert = function(k, v) {
 
   this._count++;
   
+  //double in size when 75% capacity or more used 
   if (this._count / this._limit >= .75) {
     this._count = 0;
     var oldLimit = this._limit;
@@ -72,9 +73,35 @@ HashTable.prototype.remove = function(k) {
   for (var i = 0; i < storageCopy.length; i++) {
     if (storageCopy[i][0] === k) {
       storageCopy.splice(i, 1);
+      this._count--;
     }
   }
+  
+  //halve in size when less than 25% capacity used
+  if (this._count / this._limit < .25) {
+    this._count = 0;
+    var oldLimit = this._limit;
+    this._limit *= 0.5;
+    var tuples = [];
+
+    for (var bucketIndex = 0; bucketIndex < oldLimit; bucketIndex++) {
+      var bucket = this._storage.get(bucketIndex);
+      if (bucket) {
+        for (var tupleIndex = 0; tupleIndex < bucket.length; tupleIndex++) {
+          tuples.push(this._storage.get(bucketIndex)[tupleIndex]);
+        }
+      }
+    }
+    
+    this._storage = LimitedArray(this._limit);
+    var context = this;
+    tuples.forEach(function(array) {
+      context.insert(array[0], array[1]);
+    });
+  }  
 }; 
+
+
 
 
 
