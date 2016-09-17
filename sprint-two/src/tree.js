@@ -53,11 +53,19 @@ treeMethods.removeFromParent = function() {
   this.parent = null;
 };
 
+treeMethods.traverse = function(cb) {
+  cb(this.value);
 
-
+  if (this.children.length > 0) {
+    this.children.forEach(function(child) {
+      child.traverse(cb);
+    });
+  }
+};
 //A .parent property, which refers to the parent node or null when there is no node
 //A .removeFromParent() method, which disassociates the tree with its parent (in both directions)
-
+//Implement a .traverse() method on your tree. 
+//Your .traverse() should accept a callback and execute it on every value contained in the tree
 
 
 /*
