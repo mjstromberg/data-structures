@@ -24,4 +24,9 @@ describe('set', function() {
     expect(set.contains('Mel Gibson')).to.equal(false);
   });
 
+  it('should return false if value is not contained in the set', function() {
+    set.add('Danny Glover');
+    expect(set.contains('Mel Gibson')).to.equal(false);
+  });
+
 });
