@@ -46,6 +46,61 @@ BinarySearchTree.prototype.depthFirstLog = function(cb) {
   }
 };
 
+BinarySearchTree.prototype.breadthFirstLog = function(cb) {
+  var treeQueue = TreeQueue();
+  var inFocusTree = this;
+
+  while (inFocusTree !== undefined && inFocusTree !== null) {
+    cb(inFocusTree.value);
+
+    var children = [inFocusTree.left, inFocusTree.right];
+    
+    children.forEach(function(child) {
+      if (child !== undefined && child !== null) {
+        treeQueue.enqueue(child);
+      }
+    });
+
+    inFocusTree = treeQueue.dequeue();
+  }
+};
+
+var TreeQueue = function() {
+  var someInstance = {};
+
+  // Use an object with numeric keys to store values
+  var storage = {};
+  var counter = 0;
+
+  // Implement the methods below
+
+  someInstance.enqueue = function(tree) {
+    storage[counter] = tree;
+    counter++;
+  };
+
+  someInstance.dequeue = function() {
+    var result = storage[0];
+    counter = counter > 0 ? counter - 1 : 0;
+    delete storage[0];
+    for (var key in storage) {
+      storage[+key - 1] = storage[key];
+    }
+    delete storage[counter];
+    return result;
+  };
+
+  someInstance.retrieve = function() {
+
+  };
+
+  someInstance.size = function() {
+    return counter;
+  };
+
+  return someInstance;
+};
+
 /*
  * Complexity: What is the time complexity of the above functions?
  */

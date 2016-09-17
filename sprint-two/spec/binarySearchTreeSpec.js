@@ -44,4 +44,20 @@ describe('binarySearchTree', function() {
     binarySearchTree.insert(6);
     expect(binarySearchTree.left.value < binarySearchTree.value).to.be.true;
   });
+
+  it('should build the proper queue when invoking breadthFirstLog', function() {
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.insert(6);
+    binarySearchTree.insert(4);
+    binarySearchTree.insert(10);
+    binarySearchTree.insert(8);
+    var array = [];
+    var cb = function(value) {
+      array.push(value);
+    };
+    binarySearchTree.breadthFirstLog(cb);
+    expect(array).to.eql([5, 2, 7, 3, 6, 10, 4, 8]);
+  });
 });
