@@ -46,4 +46,14 @@ describe('tree', function() {
     tree.addChild(5);
     expect(tree.contains(6)).to.equal(false);
   });
+
+  // tests for advanced content section
+  it('should have a child with a parent property if the child is not the eldest', function() {
+    tree.addChild(10);
+    tree.children[0].addChild(11);
+    expect(tree.children[0].children[0].parent.value).to.equal(10);
+  });
+
+
+  //tree.removeFromParent();
 });
