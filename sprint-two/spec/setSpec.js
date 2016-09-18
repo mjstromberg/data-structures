@@ -29,4 +29,28 @@ describe('set', function() {
     expect(set.contains('Mel Gibson')).to.equal(false);
   });
 
+  // extra tests to handle different key types
+  it('should handle numbers as keys', function() {
+    set.add(2);
+    expect(set.contains(2)).to.equal(true);
+  });
+
+  it('should handle booleans as keys', function() {
+    set.add(true);
+    expect(set.contains(true)).to.equal(true);
+  });
+
+  xit('should handle arrays as keys', function() {
+    set.add([1, 2]);
+    expect(set.contains([1, 2])).to.equal(true);
+  });
+
+  xit('should handle functions as keys', function() {
+    set.add(function() {
+      return true;
+    });
+    expect(set.contains(function() {
+      return true;
+    })).to.equal(true);
+  });
 });

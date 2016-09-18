@@ -5,7 +5,12 @@ var SetHashTable = function() {
 };
 
 SetHashTable.prototype.insert = function(k, v) {
-  var index = SetGetIndexBelowMaxForKey(k, this._limit);
+  if (typeof k !== 'string') {
+    var stringK = JSON.stringify(k);
+    var index = SetGetIndexBelowMaxForKey(stringK, this._limit);
+  } else {
+    var index = SetGetIndexBelowMaxForKey(k, this._limit);
+  } 
   var storageCopy = this._storage.get(index);
   
   if (storageCopy === undefined) {
@@ -30,7 +35,12 @@ SetHashTable.prototype.insert = function(k, v) {
 
 SetHashTable.prototype.retrieve = function(k) {
   var result;
-  var index = SetGetIndexBelowMaxForKey(k, this._limit);
+  if (typeof k !== 'string') {
+    var stringK = JSON.stringify(k);
+    var index = SetGetIndexBelowMaxForKey(stringK, this._limit);
+  } else {
+    var index = SetGetIndexBelowMaxForKey(k, this._limit);
+  }
   var storageCopy = this._storage.get(index) || [];
   for (var i = 0; i < storageCopy.length; i++) {
     if (storageCopy[i][0] === k) {
@@ -41,8 +51,12 @@ SetHashTable.prototype.retrieve = function(k) {
 };
 
 SetHashTable.prototype.remove = function(k) {
-
-  var index = SetGetIndexBelowMaxForKey(k, this._limit);
+  if (typeof k !== 'string') {
+    var stringK = JSON.stringify(k);
+    var index = SetGetIndexBelowMaxForKey(stringK, this._limit);
+  } else {
+    var index = SetGetIndexBelowMaxForKey(k, this._limit);
+  }
   var storageCopy = this._storage.get(index);
   for (var i = 0; i < storageCopy.length; i++) {
     if (storageCopy[i][0] === k) {
@@ -50,9 +64,6 @@ SetHashTable.prototype.remove = function(k) {
     }
   }
 }; 
-
-
-
 
 //hash helper functions
 var SetLimitedArray = function(limit) {
@@ -99,7 +110,6 @@ var SetGetIndexBelowMaxForKey = function(str, max) {
 };
 
 //set 
-
 var Set = function() {
   var set = Object.create(setPrototype);
   set.limit = 100;
@@ -117,24 +127,11 @@ setPrototype.add = function(item) {
 //takes any string and returns a boolean reflecting whether it can be found in the set
 setPrototype.contains = function(item) {
   return this._storage.retrieve(item) === undefined ? false : true;
-
-/*
-  var found = false;
-  this._storage.forEach(function(string) {
-    if (string === item) {
-      found = true;
-    }
-  });
-  return found;*/
 };
 
 //takes any string and removes it from the set, if present
 setPrototype.remove = function(item) {
   this._storage.remove(item);
-
-
-  /*var index = this._storage.indexOf(item);
-  this._storage.splice(index, 1);*/
 };
 
 /*
